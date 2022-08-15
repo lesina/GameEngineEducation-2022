@@ -1,3 +1,9 @@
-[submodule "SDKs/bgfx"]
-	path = SDKs/bgfx
-	url = https://github.com/bkaradzic/bgfx
+[submodule "SDKs/bgfx/bgfx"]
+	path = SDKs/bgfx/bgfx
+	url = https://github.com/bkaradzic/bgfx.git
+[submodule "SDKs/bgfx/bimg"]
+	path = SDKs/bgfx/bimg
+	url = https://github.com/bkaradzic/bimg.git
+[submodule "SDKs/bgfx/bx"]
+	path = SDKs/bgfx/bx
+	url = https://github.com/bkaradzic/bx.git
