@@ -5,7 +5,6 @@
 
 #include "RenderBackend.h"
 #include "BgfxRenderData.h"
-#include "../RenderEngine/RenderObject.h"
 
 void RenderBackend::Init()
 {
@@ -29,16 +28,22 @@ void RenderBackend::SetWindowHandle(void* windowHandle)
 	m_windowHandle = windowHandle;
 }
 
-void RenderBackend::InitRenderObject(RenderObject* renderObject)
+IRenderData* RenderBackend::CreateRenderObject(
+	void* vertices, UINT32 verticesSize,
+	void* indices, UINT32 indicesSize,
+	std::string vsShaderName, std::string psShaderName)
 {
-	BgfxRenderData* renderData = new BgfxRenderData(renderObject);
-	renderObject->SetRenderData(renderData);
+	BgfxRenderData* renderData = new BgfxRenderData(
+		vertices, verticesSize,
+		indices, indicesSize,
+		vsShaderName, psShaderName);
+	return renderData;
 }
 
 void RenderBackend::SetViewTransform()
 {
-	const bx::Vec3 at = { 0.0f, 0.5f,  0.0f };
-	const bx::Vec3 eye = { 0.0f, 7.0f, -10.0f };
+	const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
+	const bx::Vec3 eye = { 0.0f, 10.0f, -5.0f };
 	float view[16];
 	bx::mtxLookAt(view, eye, at);
 	float proj[16];
@@ -46,20 +51,20 @@ void RenderBackend::SetViewTransform()
 	bgfx::setViewTransform(0, view, proj);
 }
 
-void RenderBackend::Draw(RenderObject* renderObject)
+void RenderBackend::Draw(IRenderData* renderObject)
 {
-	assert(renderObject->GetRenderData());
+	assert(renderObject);
 
 	float mtx[16];
 	bx::mtxRotateXYZ(mtx, 0, 0, 0);
 
-	float translate[3];
+	float translate[3] = {0.0f, 0.0f, 0.0f};
 	renderObject->GetPosition(translate);
 
 	bx::mtxTranslate(mtx, translate[0], translate[1], translate[2]);
 	bgfx::setTransform(mtx);
 
-	BgfxRenderData* renderData = reinterpret_cast<BgfxRenderData*>(renderObject->GetRenderData());
+	BgfxRenderData* renderData = reinterpret_cast<BgfxRenderData*>(renderObject);
 
 	bgfx::setVertexBuffer(0, renderData->GetVertexBuffer());
 	bgfx::setIndexBuffer(renderData->GetIndexBuffer());

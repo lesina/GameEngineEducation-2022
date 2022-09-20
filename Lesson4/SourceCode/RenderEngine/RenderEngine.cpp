@@ -90,7 +90,12 @@ void RenderEngine::Update()
 
 	for (auto* renderObject : m_renderObjects)
 	{
-		m_pRenderBackend->Draw(renderObject);
+		float position[3];
+		renderObject->GetPosition(position);
+		IRenderData* renderData = renderObject->GetRenderData();
+		renderData->SetPosition(position);
+
+		m_pRenderBackend->Draw(renderData);
 	}
 
 	m_pRenderBackend->DrawFrame();
@@ -99,7 +104,14 @@ void RenderEngine::Update()
 void RenderEngine::CreateCubeRenderObject(RenderProxy* renderProxy)
 {
 	RenderObject* renderObject = new CubeRenderObject(renderProxy);
-	m_pRenderBackend->InitRenderObject(renderObject);
+
+	IRenderData* renderData = m_pRenderBackend->CreateRenderObject(
+		renderObject->GetVertices(), renderObject->GetVerticesSize(),
+		renderObject->GetIndices(), renderObject->GetIndicesSize(),
+		renderObject->GetVsShaderName(), renderObject->GetPsShaderName()
+	);
+
+	renderObject->SetRenderData(renderData);
 	m_renderObjects.emplace_back(renderObject);
 }
 
