@@ -7,3 +7,6 @@
 [submodule "SDKs/bgfx/bx"]
 	path = SDKs/bgfx/bx
 	url = https://github.com/bkaradzic/bx.git
+[submodule "SDKs/sol2/sol2"]
+	path = SDKs/sol2/sol2
+	url = https://github.com/ThePhD/sol2

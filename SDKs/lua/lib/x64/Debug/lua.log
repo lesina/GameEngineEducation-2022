@@ -1,0 +1,39 @@
+﻿  lapi.c
+  lauxlib.c
+  lbaselib.c
+  lcode.c
+  lcorolib.c
+  lctype.c
+  ldblib.c
+  ldebug.c
+  ldo.c
+  ldump.c
+  lfunc.c
+  lgc.c
+  linit.c
+  liolib.c
+  llex.c
+  lmathlib.c
+  lmem.c
+  loadlib.c
+  lobject.c
+  lopcodes.c
+  Generating Code...
+  Compiling...
+  loslib.c
+  lparser.c
+  lstate.c
+  lstring.c
+  lstrlib.c
+  ltable.c
+  ltablib.c
+  ltm.c
+  lua.c
+  luac.c
+  lundump.c
+  lutf8lib.c
+  lvm.c
+  lzio.c
+  Generating Code...
+lua.obj : warning LNK4006: main already defined in luac.obj; second definition ignored
+  lua.vcxproj -> C:\Users\Aleksei\Desktop\GEE\GameEngineEducation-MIPT\SDKs\lua\lib\x64\Debug\lua.lib
