@@ -28,7 +28,7 @@ void RenderEngine::Init()
 	bgfx::renderFrame();
 
 	bgfx::Init bgfxInit;
-	bgfxInit.type = bgfx::RendererType::Direct3D12;
+	bgfxInit.type = bgfx::RendererType::Direct3D11;
 	bgfxInit.resolution.width = m_Width;
 	bgfxInit.resolution.height = m_Height;
 	bgfxInit.resolution.reset = BGFX_RESET_VSYNC;
