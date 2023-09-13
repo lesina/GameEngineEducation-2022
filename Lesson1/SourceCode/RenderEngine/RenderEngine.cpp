@@ -1,4 +1,5 @@
 #include <bx/math.h>
+#include <bx/timer.h>
 
 #include "RenderEngine.h"
 
@@ -33,7 +34,10 @@ CRenderEngine::CRenderEngine(HINSTANCE hInstance)
 	bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x443355FF, 1.0f, 0);
 	bgfx::setViewRect(0, 0, 0, bgfx::BackbufferRatio::Equal);
 
+	m_timeOffset = bx::getHPCounter();
 	m_defaultCube = new Cube();
+	m_defaultMyFigure = new MyFigure();
+	m_defaultMySphere = new MySphere();
 }
 
 CRenderEngine::~CRenderEngine()
@@ -94,17 +98,46 @@ HWND CRenderEngine::InitMainWindow(HINSTANCE hInstance)
 void CRenderEngine::Update()
 {
 	const bx::Vec3 at = { 0.0f, 0.0f,  0.0f };
-	const bx::Vec3 eye = { 0.0f, 10.0f, -5.0f };
+	const bx::Vec3 eye = { 0.0f, 5.0f, -10.0f };
 	float view[16];
 	bx::mtxLookAt(view, eye, at);
 	float proj[16];
 	bx::mtxProj(proj, 60.0f, float(m_Width) / float(m_Height), 0.1f, 100.0f, bgfx::getCaps()->homogeneousDepth);
 	bgfx::setViewTransform(0, view, proj);
 
-	bgfx::setVertexBuffer(0, m_defaultCube->GetVertexBuffer());
-	bgfx::setIndexBuffer(m_defaultCube->GetIndexBuffer());
+	float time = (float)((bx::getHPCounter() - m_timeOffset) / double(bx::getHPFrequency()));
 
-	bgfx::submit(0, m_defaultCube->GetProgramHandle());
+	float mtx[16];
+	bx::mtxRotateY(mtx, time / 10.0f);
+	mtx[12] = 0.0f;
+	mtx[13] = 0.0f;
+	mtx[14] = -1.0f;
+
+	// Set model matrix for rendering.
+	bgfx::setTransform(mtx);
+
+	bgfx::setVertexBuffer(0, m_defaultMySphere->GetVertexBuffer());
+	bgfx::setIndexBuffer(m_defaultMySphere->GetIndexBuffer());
+
+	bgfx::submit(0, m_defaultMySphere->GetProgramHandle());
+
+	for (size_t j = 0; j < 50; j++) {
+		for (size_t i = 0; i < 50; i++) {
+			float mtx[16];
+			bx::mtxRotateY(mtx, (float(i % 2) - 0.5f) * -time * 2.0f);
+			mtx[12] = 3 * cosf(time / 5.f + i) + 100 - j * 4;
+			mtx[13] = sinf(cosf(time / 3.f + i) * 10.f) / 10.0f + sinf(float(j)) + cosf(float(i));
+			mtx[14] = 0.0f + float(i) * 3.0f - 20;
+
+			// Set model matrix for rendering.
+			bgfx::setTransform(mtx);
+
+			bgfx::setVertexBuffer(0, m_defaultMyFigure->GetVertexBuffer());
+			bgfx::setIndexBuffer(m_defaultMyFigure->GetIndexBuffer());
+
+			bgfx::submit(0, m_defaultMyFigure->GetProgramHandle());
+		}
+	}
 
 	bgfx::touch(0);
 

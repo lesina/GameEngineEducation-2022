@@ -2,17 +2,6 @@
 
 #include "../RenderObject.h"
 
-namespace
-{
-	struct PosColorVertex
-	{
-		float m_x;
-		float m_y;
-		float m_z;
-		uint32_t m_abgr;
-	};
-};
-
 class Cube : public RenderObject
 {
 public:
@@ -21,14 +10,14 @@ public:
 private:
 	inline static const PosColorVertex s_cubeVertices[] =
 	{
-		{-1.0f,  1.0f,  1.0f, 0xff000000 },
-		{ 1.0f,  1.0f,  1.0f, 0xff0000ff },
-		{-1.0f, -1.0f,  1.0f, 0xff00ff00 },
-		{ 1.0f, -1.0f,  1.0f, 0xff00ffff },
-		{-1.0f,  1.0f, -1.0f, 0xffff0000 },
-		{ 1.0f,  1.0f, -1.0f, 0xffff00ff },
-		{-1.0f, -1.0f, -1.0f, 0xffffff00 },
-		{ 1.0f, -1.0f, -1.0f, 0xffffffff },
+		{-1.0f,  1.0f,  1.0f, 0x00ffffff },
+		{ 1.0f,  1.0f,  1.0f, 0x00ffffff },
+		{-1.0f, -1.0f,  1.0f, 0x00ffffff },
+		{ 1.0f, -1.0f,  1.0f, 0x00ffffff },
+		{-1.0f,  1.0f, -1.0f, 0x00ffffff },
+		{ 1.0f,  1.0f, -1.0f, 0x00ffffff },
+		{-1.0f, -1.0f, -1.0f, 0x00ffffff },
+		{ 1.0f, -1.0f, -1.0f, 0x00ffffff },
 	};
 
 	inline static const uint16_t s_cubeTriList[] =
